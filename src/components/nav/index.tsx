@@ -31,7 +31,7 @@ const Nav: React.FC<NavProps> = ({ authedUser, dispatch }) => {
             Home
           </NavLink>
           <NavLink
-            to='/new'
+            to='/add'
             className='hover:underline'
             activeClassName='text-blue-600'>
             New Question

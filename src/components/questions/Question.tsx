@@ -11,7 +11,7 @@ import Statics from './Statics'
 interface QuestionProps {
   authedUser: IUser
   question: IQuestion
-  author: IUser
+  author: IUser | null
   dispatch: ThunkDispatch<void, void, Action>
 }
 
@@ -21,12 +21,18 @@ const Question: React.FC<QuestionProps> = ({
   author,
   dispatch
 }) => {
+  if (!question) {
+    return (
+      <div className='flex items-center h-screen text-3xl font-bold text-blue-500'>
+        404
+      </div>
+    )
+  }
   const isAnswerOptionOne = authedUser.answers[question.id] === 'optionOne'
   const isAnswerOptionTwo = authedUser.answers[question.id] === 'optionTwo'
   const isAnswered = isAnswerOptionOne || isAnswerOptionTwo
 
   const answer = (answer: 'optionOne' | 'optionTwo') => {
-    console.log('hi')
     dispatch(
       handleSaveQuestionAnswer({
         authedUser: authedUser.id,
@@ -45,7 +51,7 @@ const Question: React.FC<QuestionProps> = ({
         {isAnswered ? 'Question Statics' : 'Answer Question'}
       </h1>
       <QuestionContainer
-        user={author}
+        user={author!}
         optionOne={
           <Option
             optionText={question.optionOne.text}
@@ -99,10 +105,12 @@ const mapStateToProps = (
     }
   }
 ) => {
+  const question = questions[match.params.id]
+
   return {
     authedUser: users[authedUser],
-    question: questions[match.params.id],
-    author: users[questions[match.params.id].author]
+    question,
+    author: question ? users[questions[match.params.id].author] : null
   }
 }
 

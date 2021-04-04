@@ -23,7 +23,7 @@ const App: React.FC<AppProps> = ({ authedUser }) => {
           <>
             <Nav />
             <Route path='/' exact component={QuestionsPage} />
-            <Route path='/new' component={NewQuestion} />
+            <Route path='/add' component={NewQuestion} />
             <Route path='/leaderboard' component={LeaderBoard} />
             <Route path='/questions/:id' component={Question} />
           </>
