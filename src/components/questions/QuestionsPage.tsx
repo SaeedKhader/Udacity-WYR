@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { ThunkDispatch } from 'redux-thunk'
-import { Action, handleGetQuestions } from '../../actions/questions'
+import { Action } from '../../actions/questions'
 import { IQuestions } from '../../models/question'
 import { IUsers } from '../../models/user'
+import { AppState } from '../../store'
 import Option from './Option'
 import QuestionContainer from './QuestionContainer'
 
@@ -18,14 +19,9 @@ interface QPageProps {
 const QuestionsPage: React.FC<QPageProps> = ({
   authedUser,
   questions,
-  users,
-  dispatch
+  users
 }) => {
   const [showAnswered, setShowAnswered] = useState<boolean>(false)
-
-  useEffect(() => {
-    Object.entries(questions).length === 0 && dispatch(handleGetQuestions())
-  })
 
   const filteredQuestions: IQuestions = Object.fromEntries(
     Object.entries(questions).filter(([_, question]) => {
@@ -119,18 +115,4 @@ const QuestionsPage: React.FC<QPageProps> = ({
   )
 }
 
-const mapStateToProps = ({
-  authedUser,
-  questions,
-  users
-}: {
-  authedUser: string
-  questions: IQuestions
-  users: IUsers
-}) => ({
-  authedUser,
-  questions,
-  users
-})
-
-export default connect(mapStateToProps)(QuestionsPage)
+export default connect((props: AppState) => props)(QuestionsPage)

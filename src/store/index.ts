@@ -4,7 +4,7 @@ import middlewares from '../middlewares'
 import { IUsers } from '../models/user'
 import { IQuestions } from '../models/question'
 
-interface AppState {
+export interface AppState {
   authedUser: string
   users: IUsers
   questions: IQuestions

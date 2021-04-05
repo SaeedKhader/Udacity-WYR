@@ -4,6 +4,7 @@ import { ThunkDispatch } from 'redux-thunk'
 import { Action, handleSaveQuestionAnswer } from '../../actions/questions'
 import { IQuestion, IQuestions } from '../../models/question'
 import { IUser, IUsers } from '../../models/user'
+import E404 from '../E404'
 import Option from './Option'
 import QuestionContainer from './QuestionContainer'
 import Statics from './Statics'
@@ -22,11 +23,7 @@ const Question: React.FC<QuestionProps> = ({
   dispatch
 }) => {
   if (!question) {
-    return (
-      <div className='flex items-center h-screen text-3xl font-bold text-blue-500'>
-        404
-      </div>
-    )
+    return <E404 />
   }
   const isAnswerOptionOne = authedUser.answers[question.id] === 'optionOne'
   const isAnswerOptionTwo = authedUser.answers[question.id] === 'optionTwo'

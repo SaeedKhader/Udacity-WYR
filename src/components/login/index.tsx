@@ -1,29 +1,35 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
-import { Redirect } from 'react-router-dom'
+import { Redirect, useHistory, useLocation } from 'react-router-dom'
 import { ThunkDispatch } from 'redux-thunk'
 import { Action as AuthAction, login } from '../../actions/authedUser'
-import { Action as UAction, handleGetUsers } from '../../actions/users'
 import { IUsers } from '../../models/user'
 import UserCard from './UserCard'
 
 interface LoginProps {
-  dispatch: ThunkDispatch<void, void, AuthAction | UAction>
+  dispatch: ThunkDispatch<void, void, AuthAction>
   users: IUsers
   authedUser: string
 }
 
+interface LocationState {
+  from: {
+    pathname: string
+  }
+}
+
 const Login: React.FC<LoginProps> = ({ dispatch, users, authedUser }) => {
-  useEffect(() => {
-    Object.keys(users).length === 0 && dispatch(handleGetUsers())
-  })
+  let history = useHistory()
+  let location = useLocation<LocationState>()
 
   if (authedUser !== '') {
     return <Redirect to='/' />
   }
 
   const handleOnClick = (e: React.MouseEvent, id: string) => {
+    let { from } = location.state || { from: { pathname: '/' } }
     dispatch(login(id))
+    history.replace(from)
   }
 
   return (
